@@ -1,3 +1,4 @@
+require_relative("./film")
 require_relative("../db/sql_runner")
 
 class Customer
@@ -27,4 +28,21 @@ class Customer
     @id = user['id'].to_i
   end
 
-end
+  def self.all()
+    sql = "SELECT * FROM customers"
+    customers = SqlRunner.run(sql)
+    return Customer.map_items(customers)
+  end
+
+  def self.delete_all()
+    sql = "DELETE FROM customers"
+    SqlRunner.run(sql)
+  end
+
+  def self.map_items(customer_hashes)
+    result = customer_hashes.map { |customer_hash|
+      Customer.new(customer_hash) }
+      return result
+    end
+
+  end
